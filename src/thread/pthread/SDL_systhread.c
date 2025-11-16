@@ -50,8 +50,25 @@ static void *RunThread(void *data)
 	return((void *)0);		/* Prevent compiler warning */
 }
 
+enum LoreThunk_Constants {
+    LoreThunk_CFI_Count = 19,
+};
+
+struct LoreThunk_HLContext {
+    void *AddressBoundary;
+
+    void (*SetThreadCallback)(void *callback);
+    void *PThreadCreate;
+    void *PThreadExit;
+
+    void *CFIs[LoreThunk_CFI_Count];
+};
+
+__attribute__((visibility("default"))) struct LoreThunk_HLContext s_LoreThunk_HLContext;
+
 int SDL_SYS_CreateThread(SDL_Thread *thread, void *args)
 {
+    __typeof__(&pthread_create) thread_create = s_LoreThunk_HLContext.PThreadCreate;
 	pthread_attr_t type;
 
 	/* Set the thread attributes */
@@ -61,8 +78,12 @@ int SDL_SYS_CreateThread(SDL_Thread *thread, void *args)
 	}
 	pthread_attr_setdetachstate(&type, PTHREAD_CREATE_JOINABLE);
 
+    if (!thread_create) {
+        thread_create = pthread_create;
+    }
+
 	/* Create the thread and go! */
-	if ( pthread_create(&thread->handle, &type, RunThread, args) != 0 ) {
+	if ( thread_create(&thread->handle, &type, RunThread, args) != 0 ) {
 		SDL_SetError("Not enough resources to create thread");
 		return(-1);
 	}
