@@ -1,3 +1,55 @@
+/****************************************************************************
+** CFI wrapped code from reading C file 'SDL_diskaudio__cfic_tmp_new__.c'
+**
+** Created by: Lorelei CFI compiler
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+//
+// CFI declarations begin
+//
+enum LoreThunk_Constants {
+    LoreThunk_CFI_Count = 11,
+};
+
+struct LoreThunk_HLContext {
+    void *AddressBoundary;
+
+    void (*SetThreadCallback)(void *callback);
+    void *PThreadCreate;
+    void *PThreadExit;
+
+    void *CFIs[LoreThunk_CFI_Count];
+};
+
+__attribute__((visibility("default"))) struct LoreThunk_HLContext s_LoreThunk_HLContext;
+
+#define LORETHUNK_CFI(INDEX, FP)                                                                          \
+    ({                                                                                                  \
+        typedef __typeof__(FP) _LORETHUNK_CFI_TYPE;                                                       \
+        void *_lore_cfi_ret = (void *) (FP);                                                         \
+        if ((unsigned long) _lore_cfi_ret < (unsigned long) s_LoreThunk_HLContext.AddressBoundary) { \
+            s_LoreThunk_HLContext.SetThreadCallback(_lore_cfi_ret);                               \
+            _lore_cfi_ret = (void *) s_LoreThunk_HLContext.CFIs[INDEX - 1];                          \
+        }                                                                                               \
+        (_LORETHUNK_CFI_TYPE) _lore_cfi_ret;                                                           \
+    })
+
+// decl: int (*)(struct SDL_RWops *)
+#define LORETHUNK_CFI_2(FP) LORETHUNK_CFI(2, FP)
+
+// decl: int (*)(struct SDL_RWops *, const void *, int, int)
+#define LORETHUNK_CFI_3(FP) LORETHUNK_CFI(3, FP)
+
+//
+// CFI declarations end
+//
+
+
+//
+// Original code begin
+//
 /*
     SDL - Simple DirectMedia Layer
     Copyright (C) 1997-2012 Sam Lantinga
@@ -127,9 +179,7 @@ static void DISKAUD_PlayAudio(_THIS)
 	int written;
 
 	/* Write the audio data */
-	written = SDL_RWwrite(this->hidden->output,
-                        this->hidden->mixbuf, 1,
-                        this->hidden->mixlen);
+	written = LORETHUNK_CFI_3((this->hidden->output)->write)(this->hidden->output, this->hidden->mixbuf, 1, this->hidden->mixlen);
 
 	/* If we couldn't write, assume fatal error for now */
 	if ( (Uint32)written != this->hidden->mixlen ) {
@@ -152,7 +202,7 @@ static void DISKAUD_CloseAudio(_THIS)
 		this->hidden->mixbuf = NULL;
 	}
 	if ( this->hidden->output != NULL ) {
-		SDL_RWclose(this->hidden->output);
+		LORETHUNK_CFI_2((this->hidden->output)->close)(this->hidden->output);
 		this->hidden->output = NULL;
 	}
 }
@@ -183,4 +233,10 @@ static int DISKAUD_OpenAudio(_THIS, SDL_AudioSpec *spec)
 	/* We're ready to rock and roll. :-) */
 	return(0);
 }
+
+
+//
+// Original code end
+//
+
 

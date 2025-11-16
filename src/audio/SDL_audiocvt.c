@@ -1,3 +1,52 @@
+/****************************************************************************
+** CFI wrapped code from reading C file 'SDL_audiocvt__cfic_tmp_new__.c'
+**
+** Created by: Lorelei CFI compiler
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+//
+// CFI declarations begin
+//
+enum LoreThunk_Constants {
+    LoreThunk_CFI_Count = 11,
+};
+
+struct LoreThunk_HLContext {
+    void *AddressBoundary;
+
+    void (*SetThreadCallback)(void *callback);
+    void *PThreadCreate;
+    void *PThreadExit;
+
+    void *CFIs[LoreThunk_CFI_Count];
+};
+
+__attribute__((visibility("default"))) struct LoreThunk_HLContext s_LoreThunk_HLContext;
+
+#define LORETHUNK_CFI(INDEX, FP)                                                                          \
+    ({                                                                                                  \
+        typedef __typeof__(FP) _LORETHUNK_CFI_TYPE;                                                       \
+        void *_lore_cfi_ret = (void *) (FP);                                                         \
+        if ((unsigned long) _lore_cfi_ret < (unsigned long) s_LoreThunk_HLContext.AddressBoundary) { \
+            s_LoreThunk_HLContext.SetThreadCallback(_lore_cfi_ret);                               \
+            _lore_cfi_ret = (void *) s_LoreThunk_HLContext.CFIs[INDEX - 1];                          \
+        }                                                                                               \
+        (_LORETHUNK_CFI_TYPE) _lore_cfi_ret;                                                           \
+    })
+
+// decl: void (*)(struct SDL_AudioCVT *, unsigned short)
+#define LORETHUNK_CFI_9(FP) LORETHUNK_CFI(9, FP)
+
+//
+// CFI declarations end
+//
+
+
+//
+// Original code begin
+//
 /*
     SDL - Simple DirectMedia Layer
     Copyright (C) 1997-2012 Sam Lantinga
@@ -129,7 +178,7 @@ void SDLCALL SDL_ConvertMono(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt /= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -244,7 +293,7 @@ void SDLCALL SDL_ConvertStrip(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt /= 3;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -360,7 +409,7 @@ void SDLCALL SDL_ConvertStrip_2(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt /= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -397,7 +446,7 @@ void SDLCALL SDL_ConvertStereo(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt *= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -574,7 +623,7 @@ void SDLCALL SDL_ConvertSurround(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt *= 3;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -727,7 +776,7 @@ void SDLCALL SDL_ConvertSurround_4(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt *= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -752,7 +801,7 @@ void SDLCALL SDL_Convert16LSB(SDL_AudioCVT *cvt, Uint16 format)
 	format = ((format & ~0x0008) | AUDIO_U16LSB);
 	cvt->len_cvt *= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 /* Convert 8-bit to 16-bit - MSB */
@@ -775,7 +824,7 @@ void SDLCALL SDL_Convert16MSB(SDL_AudioCVT *cvt, Uint16 format)
 	format = ((format & ~0x0008) | AUDIO_U16MSB);
 	cvt->len_cvt *= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -801,7 +850,7 @@ void SDLCALL SDL_Convert8(SDL_AudioCVT *cvt, Uint16 format)
 	format = ((format & ~0x9010) | AUDIO_U8);
 	cvt->len_cvt /= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -830,7 +879,7 @@ void SDLCALL SDL_ConvertSign(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	format = (format ^ 0x8000);
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -852,7 +901,7 @@ void SDLCALL SDL_ConvertEndian(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	format = (format ^ 0x1000);
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -889,7 +938,7 @@ void SDLCALL SDL_RateMUL2(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt *= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -933,7 +982,7 @@ void SDLCALL SDL_RateMUL2_c2(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt *= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -988,7 +1037,7 @@ void SDLCALL SDL_RateMUL2_c4(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt *= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -1056,7 +1105,7 @@ void SDLCALL SDL_RateMUL2_c6(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt *= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -1090,7 +1139,7 @@ void SDLCALL SDL_RateDIV2(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt /= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -1128,7 +1177,7 @@ void SDLCALL SDL_RateDIV2_c2(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt /= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -1172,7 +1221,7 @@ void SDLCALL SDL_RateDIV2_c4(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt /= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -1221,7 +1270,7 @@ void SDLCALL SDL_RateDIV2_c6(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt /= 2;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -1296,7 +1345,7 @@ void SDLCALL SDL_RateSLOW(SDL_AudioCVT *cvt, Uint16 format)
 	}
 	cvt->len_cvt = clen;
 	if ( cvt->filters[++cvt->filter_index] ) {
-		cvt->filters[cvt->filter_index](cvt, format);
+		LORETHUNK_CFI_9(cvt->filters[cvt->filter_index])(cvt, format);
 	}
 }
 
@@ -1315,7 +1364,7 @@ int SDL_ConvertAudio(SDL_AudioCVT *cvt)
 
 	/* Set up the conversion and go! */
 	cvt->filter_index = 0;
-	cvt->filters[0](cvt, cvt->src_format);
+	LORETHUNK_CFI_9(cvt->filters[0])(cvt, cvt->src_format);
 	return(0);
 }
 
@@ -1508,3 +1557,9 @@ int SDL_BuildAudioCVT(SDL_AudioCVT *cvt,
 	}
 	return(cvt->needed);
 }
+
+//
+// Original code end
+//
+
+

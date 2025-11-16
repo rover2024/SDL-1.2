@@ -1,3 +1,58 @@
+/****************************************************************************
+** CFI wrapped code from reading C file 'SDL_wave__cfic_tmp_new__.c'
+**
+** Created by: Lorelei CFI compiler
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+//
+// CFI declarations begin
+//
+enum LoreThunk_Constants {
+    LoreThunk_CFI_Count = 11,
+};
+
+struct LoreThunk_HLContext {
+    void *AddressBoundary;
+
+    void (*SetThreadCallback)(void *callback);
+    void *PThreadCreate;
+    void *PThreadExit;
+
+    void *CFIs[LoreThunk_CFI_Count];
+};
+
+__attribute__((visibility("default"))) struct LoreThunk_HLContext s_LoreThunk_HLContext;
+
+#define LORETHUNK_CFI(INDEX, FP)                                                                          \
+    ({                                                                                                  \
+        typedef __typeof__(FP) _LORETHUNK_CFI_TYPE;                                                       \
+        void *_lore_cfi_ret = (void *) (FP);                                                         \
+        if ((unsigned long) _lore_cfi_ret < (unsigned long) s_LoreThunk_HLContext.AddressBoundary) { \
+            s_LoreThunk_HLContext.SetThreadCallback(_lore_cfi_ret);                               \
+            _lore_cfi_ret = (void *) s_LoreThunk_HLContext.CFIs[INDEX - 1];                          \
+        }                                                                                               \
+        (_LORETHUNK_CFI_TYPE) _lore_cfi_ret;                                                           \
+    })
+
+// decl: int (*)(struct SDL_RWops *)
+#define LORETHUNK_CFI_2(FP) LORETHUNK_CFI(2, FP)
+
+// decl: int (*)(struct SDL_RWops *, int, int)
+#define LORETHUNK_CFI_4(FP) LORETHUNK_CFI(4, FP)
+
+// decl: int (*)(struct SDL_RWops *, void *, int, int)
+#define LORETHUNK_CFI_5(FP) LORETHUNK_CFI(5, FP)
+
+//
+// CFI declarations end
+//
+
+
+//
+// Original code begin
+//
 /*
     SDL - Simple DirectMedia Layer
     Copyright (C) 1997-2012 Sam Lantinga
@@ -599,10 +654,10 @@ done:
 	}
 	if ( src ) {
 		if ( freesrc ) {
-			SDL_RWclose(src);
+			LORETHUNK_CFI_2((src)->close)(src);
 		} else {
 			/* seek to the end of the file (given by the RIFF chunk) */
-			SDL_RWseek(src, wavelen - chunk.length - headerDiff, RW_SEEK_CUR);
+			LORETHUNK_CFI_4((src)->seek)(src, wavelen - chunk.length - headerDiff, 1);
 		}
 	}
 	if ( was_error ) {
@@ -630,7 +685,7 @@ static int ReadChunk(SDL_RWops *src, Chunk *chunk)
 		SDL_Error(SDL_ENOMEM);
 		return(-1);
 	}
-	if ( SDL_RWread(src, chunk->data, chunk->length, 1) != 1 ) {
+	if ( LORETHUNK_CFI_5((src)->read)(src, chunk->data, chunk->length, 1) != 1 ) {
 		SDL_Error(SDL_EFREAD);
 		SDL_free(chunk->data);
 		chunk->data = NULL;
@@ -638,3 +693,9 @@ static int ReadChunk(SDL_RWops *src, Chunk *chunk)
 	}
 	return(chunk->length);
 }
+
+//
+// Original code end
+//
+
+

@@ -1,3 +1,52 @@
+/****************************************************************************
+** CFI wrapped code from reading C file 'SDL_keyboard__cfic_tmp_new__.c'
+**
+** Created by: Lorelei CFI compiler
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+//
+// CFI declarations begin
+//
+enum LoreThunk_Constants {
+    LoreThunk_CFI_Count = 11,
+};
+
+struct LoreThunk_HLContext {
+    void *AddressBoundary;
+
+    void (*SetThreadCallback)(void *callback);
+    void *PThreadCreate;
+    void *PThreadExit;
+
+    void *CFIs[LoreThunk_CFI_Count];
+};
+
+__attribute__((visibility("default"))) struct LoreThunk_HLContext s_LoreThunk_HLContext;
+
+#define LORETHUNK_CFI(INDEX, FP)                                                                          \
+    ({                                                                                                  \
+        typedef __typeof__(FP) _LORETHUNK_CFI_TYPE;                                                       \
+        void *_lore_cfi_ret = (void *) (FP);                                                         \
+        if ((unsigned long) _lore_cfi_ret < (unsigned long) s_LoreThunk_HLContext.AddressBoundary) { \
+            s_LoreThunk_HLContext.SetThreadCallback(_lore_cfi_ret);                               \
+            _lore_cfi_ret = (void *) s_LoreThunk_HLContext.CFIs[INDEX - 1];                          \
+        }                                                                                               \
+        (_LORETHUNK_CFI_TYPE) _lore_cfi_ret;                                                           \
+    })
+
+// decl: int (*)(const union SDL_Event *)
+#define LORETHUNK_CFI_1(FP) LORETHUNK_CFI(1, FP)
+
+//
+// CFI declarations end
+//
+
+
+//
+// Original code begin
+//
 /*
     SDL - Simple DirectMedia Layer
     Copyright (C) 1997-2012 Sam Lantinga
@@ -575,7 +624,7 @@ printf("Keyboard event didn't change state - dropped!\n");
 			SDL_KeyRepeat.firsttime = 1;
 			SDL_KeyRepeat.timestamp=SDL_GetTicks();
 		}
-		if ( (SDL_EventOK == NULL) || SDL_EventOK(&event) ) {
+		if ( (SDL_EventOK == NULL) || LORETHUNK_CFI_1(SDL_EventOK)(&event) ) {
 			posted = 1;
 			SDL_PushEvent(&event);
 		}
@@ -601,7 +650,7 @@ void SDL_CheckKeyRepeat(void)
 		} else {
 			if ( interval > (Uint32)SDL_KeyRepeat.interval ) {
 				SDL_KeyRepeat.timestamp = now;
-				if ( (SDL_EventOK == NULL) || SDL_EventOK(&SDL_KeyRepeat.evt) ) {
+				if ( (SDL_EventOK == NULL) || LORETHUNK_CFI_1(SDL_EventOK)(&SDL_KeyRepeat.evt) ) {
 					SDL_PushEvent(&SDL_KeyRepeat.evt);
 				}
 			}
@@ -627,4 +676,10 @@ void SDL_GetKeyRepeat(int *delay, int *interval)
 	*delay = SDL_KeyRepeat.delay;
 	*interval = SDL_KeyRepeat.interval;
 }
+
+
+//
+// Original code end
+//
+
 

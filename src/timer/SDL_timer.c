@@ -1,3 +1,52 @@
+/****************************************************************************
+** CFI wrapped code from reading C file 'SDL_timer__cfic_tmp_new__.c'
+**
+** Created by: Lorelei CFI compiler
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+//
+// CFI declarations begin
+//
+enum LoreThunk_Constants {
+    LoreThunk_CFI_Count = 11,
+};
+
+struct LoreThunk_HLContext {
+    void *AddressBoundary;
+
+    void (*SetThreadCallback)(void *callback);
+    void *PThreadCreate;
+    void *PThreadExit;
+
+    void *CFIs[LoreThunk_CFI_Count];
+};
+
+__attribute__((visibility("default"))) struct LoreThunk_HLContext s_LoreThunk_HLContext;
+
+#define LORETHUNK_CFI(INDEX, FP)                                                                          \
+    ({                                                                                                  \
+        typedef __typeof__(FP) _LORETHUNK_CFI_TYPE;                                                       \
+        void *_lore_cfi_ret = (void *) (FP);                                                         \
+        if ((unsigned long) _lore_cfi_ret < (unsigned long) s_LoreThunk_HLContext.AddressBoundary) { \
+            s_LoreThunk_HLContext.SetThreadCallback(_lore_cfi_ret);                               \
+            _lore_cfi_ret = (void *) s_LoreThunk_HLContext.CFIs[INDEX - 1];                          \
+        }                                                                                               \
+        (_LORETHUNK_CFI_TYPE) _lore_cfi_ret;                                                           \
+    })
+
+// decl: unsigned int (*)(unsigned int, void *)
+#define LORETHUNK_CFI_8(FP) LORETHUNK_CFI(8, FP)
+
+//
+// CFI declarations end
+//
+
+
+//
+// Original code begin
+//
 /*
     SDL - Simple DirectMedia Layer
     Copyright (C) 1997-2012 Sam Lantinga
@@ -128,7 +177,7 @@ void SDL_ThreadedTimerCheck(void)
 #endif
 			timer = *t;
 			SDL_mutexV(SDL_timer_mutex);
-			ms = timer.cb(timer.interval, timer.param);
+			ms = LORETHUNK_CFI_8(timer.cb)(timer.interval, timer.param);
 			SDL_mutexP(SDL_timer_mutex);
 			if ( list_changed ) {
 				/* Abort, list of timers modified */
@@ -283,3 +332,9 @@ int SDL_SetTimer(Uint32 ms, SDL_TimerCallback callback)
 
 	return retval;
 }
+
+//
+// Original code end
+//
+
+

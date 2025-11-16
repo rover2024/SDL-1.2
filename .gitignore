@@ -90,3 +90,5 @@ test/testcursor
 test/testloadso
 include/SDL_config.h
 src/SDL.d
+
+.cache

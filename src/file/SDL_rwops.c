@@ -1,3 +1,55 @@
+/****************************************************************************
+** CFI wrapped code from reading C file 'SDL_rwops__cfic_tmp_new__.c'
+**
+** Created by: Lorelei CFI compiler
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+//
+// CFI declarations begin
+//
+enum LoreThunk_Constants {
+    LoreThunk_CFI_Count = 11,
+};
+
+struct LoreThunk_HLContext {
+    void *AddressBoundary;
+
+    void (*SetThreadCallback)(void *callback);
+    void *PThreadCreate;
+    void *PThreadExit;
+
+    void *CFIs[LoreThunk_CFI_Count];
+};
+
+__attribute__((visibility("default"))) struct LoreThunk_HLContext s_LoreThunk_HLContext;
+
+#define LORETHUNK_CFI(INDEX, FP)                                                                          \
+    ({                                                                                                  \
+        typedef __typeof__(FP) _LORETHUNK_CFI_TYPE;                                                       \
+        void *_lore_cfi_ret = (void *) (FP);                                                         \
+        if ((unsigned long) _lore_cfi_ret < (unsigned long) s_LoreThunk_HLContext.AddressBoundary) { \
+            s_LoreThunk_HLContext.SetThreadCallback(_lore_cfi_ret);                               \
+            _lore_cfi_ret = (void *) s_LoreThunk_HLContext.CFIs[INDEX - 1];                          \
+        }                                                                                               \
+        (_LORETHUNK_CFI_TYPE) _lore_cfi_ret;                                                           \
+    })
+
+// decl: int (*)(struct SDL_RWops *, const void *, int, int)
+#define LORETHUNK_CFI_3(FP) LORETHUNK_CFI(3, FP)
+
+// decl: int (*)(struct SDL_RWops *, void *, int, int)
+#define LORETHUNK_CFI_5(FP) LORETHUNK_CFI(5, FP)
+
+//
+// CFI declarations end
+//
+
+
+//
+// Original code begin
+//
 /*
     SDL - Simple DirectMedia Layer
     Copyright (C) 1997-2012 Sam Lantinga
@@ -602,72 +654,78 @@ Uint16 SDL_ReadLE16 (SDL_RWops *src)
 {
 	Uint16 value;
 
-	SDL_RWread(src, &value, (sizeof value), 1);
+	LORETHUNK_CFI_5((src)->read)(src, &value, (sizeof value), 1);
 	return(SDL_SwapLE16(value));
 }
 Uint16 SDL_ReadBE16 (SDL_RWops *src)
 {
 	Uint16 value;
 
-	SDL_RWread(src, &value, (sizeof value), 1);
+	LORETHUNK_CFI_5((src)->read)(src, &value, (sizeof value), 1);
 	return(SDL_SwapBE16(value));
 }
 Uint32 SDL_ReadLE32 (SDL_RWops *src)
 {
 	Uint32 value;
 
-	SDL_RWread(src, &value, (sizeof value), 1);
+	LORETHUNK_CFI_5((src)->read)(src, &value, (sizeof value), 1);
 	return(SDL_SwapLE32(value));
 }
 Uint32 SDL_ReadBE32 (SDL_RWops *src)
 {
 	Uint32 value;
 
-	SDL_RWread(src, &value, (sizeof value), 1);
+	LORETHUNK_CFI_5((src)->read)(src, &value, (sizeof value), 1);
 	return(SDL_SwapBE32(value));
 }
 Uint64 SDL_ReadLE64 (SDL_RWops *src)
 {
 	Uint64 value;
 
-	SDL_RWread(src, &value, (sizeof value), 1);
+	LORETHUNK_CFI_5((src)->read)(src, &value, (sizeof value), 1);
 	return(SDL_SwapLE64(value));
 }
 Uint64 SDL_ReadBE64 (SDL_RWops *src)
 {
 	Uint64 value;
 
-	SDL_RWread(src, &value, (sizeof value), 1);
+	LORETHUNK_CFI_5((src)->read)(src, &value, (sizeof value), 1);
 	return(SDL_SwapBE64(value));
 }
 
 int SDL_WriteLE16 (SDL_RWops *dst, Uint16 value)
 {
 	value = SDL_SwapLE16(value);
-	return(SDL_RWwrite(dst, &value, (sizeof value), 1));
+	return(LORETHUNK_CFI_3((dst)->write)(dst, &value, (sizeof value), 1));
 }
 int SDL_WriteBE16 (SDL_RWops *dst, Uint16 value)
 {
 	value = SDL_SwapBE16(value);
-	return(SDL_RWwrite(dst, &value, (sizeof value), 1));
+	return(LORETHUNK_CFI_3((dst)->write)(dst, &value, (sizeof value), 1));
 }
 int SDL_WriteLE32 (SDL_RWops *dst, Uint32 value)
 {
 	value = SDL_SwapLE32(value);
-	return(SDL_RWwrite(dst, &value, (sizeof value), 1));
+	return(LORETHUNK_CFI_3((dst)->write)(dst, &value, (sizeof value), 1));
 }
 int SDL_WriteBE32 (SDL_RWops *dst, Uint32 value)
 {
 	value = SDL_SwapBE32(value);
-	return(SDL_RWwrite(dst, &value, (sizeof value), 1));
+	return(LORETHUNK_CFI_3((dst)->write)(dst, &value, (sizeof value), 1));
 }
 int SDL_WriteLE64 (SDL_RWops *dst, Uint64 value)
 {
 	value = SDL_SwapLE64(value);
-	return(SDL_RWwrite(dst, &value, (sizeof value), 1));
+	return(LORETHUNK_CFI_3((dst)->write)(dst, &value, (sizeof value), 1));
 }
 int SDL_WriteBE64 (SDL_RWops *dst, Uint64 value)
 {
 	value = SDL_SwapBE64(value);
-	return(SDL_RWwrite(dst, &value, (sizeof value), 1));
+	return(LORETHUNK_CFI_3((dst)->write)(dst, &value, (sizeof value), 1));
 }
+
+//
+// Original code end
+//
+
+

@@ -95,7 +95,7 @@ struct SDL_PrivateVideoData {
 #endif
 	int rotate;
 	int shadow_fb;				/* Tells whether a shadow is being used. */
-	FB_bitBlit *blitFunc;
+	FB_bitBlit *blitFunc2;
 	int physlinebytes;			/* Length of a line in bytes in physical fb */
 
 #define NUM_MODELISTS	4		/* 8, 16, 24, and 32 bits-per-pixel */
@@ -113,8 +113,8 @@ struct SDL_PrivateVideoData {
 	Uint8 *screen_contents;
 	__u16  screen_palette[3*256];
 
-	void (*wait_vbl)(_THIS);
-	void (*wait_idle)(_THIS);
+	void (*wait_vbl2)(_THIS);
+	void (*wait_idle2)(_THIS);
 };
 /* Old variable names */
 #define console_fd		(this->hidden->console_fd)
@@ -149,7 +149,7 @@ struct SDL_PrivateVideoData {
 #endif
 #define rotate			(this->hidden->rotate)
 #define shadow_fb		(this->hidden->shadow_fb)
-#define blitFunc		(this->hidden->blitFunc)
+#define blitFunc		(this->hidden->blitFunc2)
 #define physlinebytes		(this->hidden->physlinebytes)
 #define SDL_nummodes		(this->hidden->SDL_nummodes)
 #define SDL_modelist		(this->hidden->SDL_modelist)
@@ -162,8 +162,8 @@ struct SDL_PrivateVideoData {
 #define screen_arealen		(this->hidden->screen_arealen)
 #define screen_contents		(this->hidden->screen_contents)
 #define screen_palette		(this->hidden->screen_palette)
-#define wait_vbl		(this->hidden->wait_vbl)
-#define wait_idle		(this->hidden->wait_idle)
+#define wait_vbl		(this->hidden->wait_vbl2)
+#define wait_idle		(this->hidden->wait_idle2)
 
 /* Accelerator types that are supported by the driver, but are not
    necessarily in the kernel headers on the system we compile on.

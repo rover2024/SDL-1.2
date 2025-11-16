@@ -1,3 +1,52 @@
+/****************************************************************************
+** CFI wrapped code from reading C file 'SDL_video__cfic_tmp_new__.c'
+**
+** Created by: Lorelei CFI compiler
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+//
+// CFI declarations begin
+//
+enum LoreThunk_Constants {
+    LoreThunk_CFI_Count = 11,
+};
+
+struct LoreThunk_HLContext {
+    void *AddressBoundary;
+
+    void (*SetThreadCallback)(void *callback);
+    void *PThreadCreate;
+    void *PThreadExit;
+
+    void *CFIs[LoreThunk_CFI_Count];
+};
+
+__attribute__((visibility("default"))) struct LoreThunk_HLContext s_LoreThunk_HLContext;
+
+#define LORETHUNK_CFI(INDEX, FP)                                                                          \
+    ({                                                                                                  \
+        typedef __typeof__(FP) _LORETHUNK_CFI_TYPE;                                                       \
+        void *_lore_cfi_ret = (void *) (FP);                                                         \
+        if ((unsigned long) _lore_cfi_ret < (unsigned long) s_LoreThunk_HLContext.AddressBoundary) { \
+            s_LoreThunk_HLContext.SetThreadCallback(_lore_cfi_ret);                               \
+            _lore_cfi_ret = (void *) s_LoreThunk_HLContext.CFIs[INDEX - 1];                          \
+        }                                                                                               \
+        (_LORETHUNK_CFI_TYPE) _lore_cfi_ret;                                                           \
+    })
+
+// decl: void (*)(void)
+#define LORETHUNK_CFI_11(FP) LORETHUNK_CFI(11, FP)
+
+//
+// CFI declarations end
+//
+
+
+//
+// Original code begin
+//
 /*
     SDL - Simple DirectMedia Layer
     Copyright (C) 1997-2012 Sam Lantinga
@@ -1594,7 +1643,7 @@ void SDL_GL_UpdateRects(int numrects, SDL_Rect *rects)
 				if ( update.h > 256 )
 					update.h = 256;
 			
-				this->glFlush();
+				LORETHUNK_CFI_11(this->glFlush)();
 				this->glTexSubImage2D( 
 					GL_TEXTURE_2D, 
 					0, 
@@ -1612,7 +1661,7 @@ void SDL_GL_UpdateRects(int numrects, SDL_Rect *rects)
 						this->screen->format->BytesPerPixel * update.x + 
 						update.y * this->screen->pitch );
 	
-				this->glFlush();
+				LORETHUNK_CFI_11(this->glFlush)();
 				/*
 				* Note the parens around the function name:
 				* This is because some OpenGL implementations define glTexCoord etc 
@@ -1627,7 +1676,7 @@ void SDL_GL_UpdateRects(int numrects, SDL_Rect *rects)
 					(this->glVertex2i)( update.x, update.y + update.h );
 					(this->glTexCoord2f)( (float)(update.w / 256.0), (float)(update.h / 256.0) );	
 					(this->glVertex2i)( update.x + update.w	, update.y + update.h );
-				this->glEnd();	
+				LORETHUNK_CFI_11(this->glEnd)();	
 			
 				tmp.x += 256;
 				tmp.w -= 256;
@@ -1675,14 +1724,14 @@ void SDL_GL_Lock()
 
 		this->glViewport(0, 0, this->screen->w, this->screen->h);
 		this->glMatrixMode(GL_PROJECTION);
-		this->glPushMatrix();
-		this->glLoadIdentity();
+		LORETHUNK_CFI_11(this->glPushMatrix)();
+		LORETHUNK_CFI_11(this->glLoadIdentity)();
 
 		this->glOrtho(0.0, (GLdouble) this->screen->w, (GLdouble) this->screen->h, 0.0, 0.0, 1.0);
 
 		this->glMatrixMode(GL_MODELVIEW);
-		this->glPushMatrix();
-		this->glLoadIdentity();
+		LORETHUNK_CFI_11(this->glPushMatrix)();
+		LORETHUNK_CFI_11(this->glLoadIdentity)();
 	}
 #endif
 }
@@ -1696,12 +1745,12 @@ void SDL_GL_Unlock()
 	{
 		SDL_VideoDevice *this = current_video;
 
-		this->glPopMatrix();
+		LORETHUNK_CFI_11(this->glPopMatrix)();
 		this->glMatrixMode(GL_PROJECTION);
-		this->glPopMatrix();
+		LORETHUNK_CFI_11(this->glPopMatrix)();
 
-		this->glPopClientAttrib();
-		this->glPopAttrib();
+		LORETHUNK_CFI_11(this->glPopClientAttrib)();
+		LORETHUNK_CFI_11(this->glPopAttrib)();
 	}
 #endif
 }
@@ -1993,3 +2042,9 @@ int SDL_GetWMInfo (SDL_SysWMinfo *info)
 		return(0);
 	}
 }
+
+//
+// Original code end
+//
+
+

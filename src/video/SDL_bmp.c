@@ -1,3 +1,61 @@
+/****************************************************************************
+** CFI wrapped code from reading C file 'SDL_bmp__cfic_tmp_new__.c'
+**
+** Created by: Lorelei CFI compiler
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+//
+// CFI declarations begin
+//
+enum LoreThunk_Constants {
+    LoreThunk_CFI_Count = 11,
+};
+
+struct LoreThunk_HLContext {
+    void *AddressBoundary;
+
+    void (*SetThreadCallback)(void *callback);
+    void *PThreadCreate;
+    void *PThreadExit;
+
+    void *CFIs[LoreThunk_CFI_Count];
+};
+
+__attribute__((visibility("default"))) struct LoreThunk_HLContext s_LoreThunk_HLContext;
+
+#define LORETHUNK_CFI(INDEX, FP)                                                                          \
+    ({                                                                                                  \
+        typedef __typeof__(FP) _LORETHUNK_CFI_TYPE;                                                       \
+        void *_lore_cfi_ret = (void *) (FP);                                                         \
+        if ((unsigned long) _lore_cfi_ret < (unsigned long) s_LoreThunk_HLContext.AddressBoundary) { \
+            s_LoreThunk_HLContext.SetThreadCallback(_lore_cfi_ret);                               \
+            _lore_cfi_ret = (void *) s_LoreThunk_HLContext.CFIs[INDEX - 1];                          \
+        }                                                                                               \
+        (_LORETHUNK_CFI_TYPE) _lore_cfi_ret;                                                           \
+    })
+
+// decl: int (*)(struct SDL_RWops *)
+#define LORETHUNK_CFI_2(FP) LORETHUNK_CFI(2, FP)
+
+// decl: int (*)(struct SDL_RWops *, const void *, int, int)
+#define LORETHUNK_CFI_3(FP) LORETHUNK_CFI(3, FP)
+
+// decl: int (*)(struct SDL_RWops *, int, int)
+#define LORETHUNK_CFI_4(FP) LORETHUNK_CFI(4, FP)
+
+// decl: int (*)(struct SDL_RWops *, void *, int, int)
+#define LORETHUNK_CFI_5(FP) LORETHUNK_CFI(5, FP)
+
+//
+// CFI declarations end
+//
+
+
+//
+// Original code begin
+//
 /*
     SDL - Simple DirectMedia Layer
     Copyright (C) 1997-2012 Sam Lantinga
@@ -90,9 +148,9 @@ SDL_Surface * SDL_LoadBMP_RW (SDL_RWops *src, int freesrc)
 	}
 
 	/* Read in the BMP file header */
-	fp_offset = SDL_RWtell(src);
+	fp_offset = LORETHUNK_CFI_4((src)->seek)(src, 0, 1);
 	SDL_ClearError();
-	if ( SDL_RWread(src, magic, 1, 2) != 2 ) {
+	if ( LORETHUNK_CFI_5((src)->read)(src, magic, 1, 2) != 2 ) {
 		SDL_Error(SDL_EFREAD);
 		was_error = SDL_TRUE;
 		goto done;
@@ -254,24 +312,24 @@ SDL_Surface * SDL_LoadBMP_RW (SDL_RWops *src, int freesrc)
 		}
 		if ( biSize == 12 ) {
 			for ( i = 0; i < (int)biClrUsed; ++i ) {
-				SDL_RWread(src, &palette->colors[i].b, 1, 1);
-				SDL_RWread(src, &palette->colors[i].g, 1, 1);
-				SDL_RWread(src, &palette->colors[i].r, 1, 1);
+				LORETHUNK_CFI_5((src)->read)(src, &palette->colors[i].b, 1, 1);
+				LORETHUNK_CFI_5((src)->read)(src, &palette->colors[i].g, 1, 1);
+				LORETHUNK_CFI_5((src)->read)(src, &palette->colors[i].r, 1, 1);
 				palette->colors[i].unused = 0;
 			}	
 		} else {
 			for ( i = 0; i < (int)biClrUsed; ++i ) {
-				SDL_RWread(src, &palette->colors[i].b, 1, 1);
-				SDL_RWread(src, &palette->colors[i].g, 1, 1);
-				SDL_RWread(src, &palette->colors[i].r, 1, 1);
-				SDL_RWread(src, &palette->colors[i].unused, 1, 1);
+				LORETHUNK_CFI_5((src)->read)(src, &palette->colors[i].b, 1, 1);
+				LORETHUNK_CFI_5((src)->read)(src, &palette->colors[i].g, 1, 1);
+				LORETHUNK_CFI_5((src)->read)(src, &palette->colors[i].r, 1, 1);
+				LORETHUNK_CFI_5((src)->read)(src, &palette->colors[i].unused, 1, 1);
 			}	
 		}
 		palette->ncolors = biClrUsed;
 	}
 
 	/* Read the surface pixels.  Note that the bmp image is upside down */
-	if ( SDL_RWseek(src, fp_offset+bfOffBits, RW_SEEK_SET) < 0 ) {
+	if ( LORETHUNK_CFI_4((src)->seek)(src, fp_offset+bfOffBits, 0) < 0 ) {
 		SDL_Error(SDL_EFSEEK);
 		was_error = SDL_TRUE;
 		goto done;
@@ -305,7 +363,7 @@ SDL_Surface * SDL_LoadBMP_RW (SDL_RWops *src, int freesrc)
 			int   shift = (8-ExpandBMP);
 			for ( i=0; i<surface->w; ++i ) {
 				if ( i%(8/ExpandBMP) == 0 ) {
-					if ( !SDL_RWread(src, &pixel, 1, 1) ) {
+					if ( !LORETHUNK_CFI_5((src)->read)(src, &pixel, 1, 1) ) {
 						SDL_SetError(
 					"Error reading from BMP");
 						was_error = SDL_TRUE;
@@ -324,7 +382,7 @@ SDL_Surface * SDL_LoadBMP_RW (SDL_RWops *src, int freesrc)
 			break;
 
 			default:
-			if ( SDL_RWread(src, bits, 1, surface->pitch)
+			if ( LORETHUNK_CFI_5((src)->read)(src, bits, 1, surface->pitch)
 							 != surface->pitch ) {
 				SDL_Error(SDL_EFREAD);
 				was_error = SDL_TRUE;
@@ -366,7 +424,7 @@ SDL_Surface * SDL_LoadBMP_RW (SDL_RWops *src, int freesrc)
 		if ( pad ) {
 			Uint8 padbyte;
 			for ( i=0; i<pad; ++i ) {
-				SDL_RWread(src, &padbyte, 1, 1);
+				LORETHUNK_CFI_5((src)->read)(src, &padbyte, 1, 1);
 			}
 		}
 		if ( topDown ) {
@@ -378,7 +436,7 @@ SDL_Surface * SDL_LoadBMP_RW (SDL_RWops *src, int freesrc)
 done:
 	if ( was_error ) {
 		if ( src ) {
-			SDL_RWseek(src, fp_offset, RW_SEEK_SET);
+			LORETHUNK_CFI_4((src)->seek)(src, fp_offset, 0);
 		}
 		if ( surface ) {
 			SDL_FreeSurface(surface);
@@ -386,7 +444,7 @@ done:
 		surface = NULL;
 	}
 	if ( freesrc && src ) {
-		SDL_RWclose(src);
+		LORETHUNK_CFI_2((src)->close)(src);
 	}
 	return(surface);
 }
@@ -479,9 +537,9 @@ int SDL_SaveBMP_RW (SDL_Surface *saveme, SDL_RWops *dst, int freedst)
 		bfOffBits = 0;		/* We'll write this when we're done */
 
 		/* Write the BMP file header values */
-		fp_offset = SDL_RWtell(dst);
+		fp_offset = LORETHUNK_CFI_4((dst)->seek)(dst, 0, 1);
 		SDL_ClearError();
-		SDL_RWwrite(dst, magic, 2, 1);
+		LORETHUNK_CFI_3((dst)->write)(dst, magic, 2, 1);
 		SDL_WriteLE32(dst, bfSize);
 		SDL_WriteLE16(dst, bfReserved1);
 		SDL_WriteLE16(dst, bfReserved2);
@@ -525,20 +583,20 @@ int SDL_SaveBMP_RW (SDL_Surface *saveme, SDL_RWops *dst, int freedst)
 			colors = surface->format->palette->colors;
 			ncolors = surface->format->palette->ncolors;
 			for ( i=0; i<ncolors; ++i ) {
-				SDL_RWwrite(dst, &colors[i].b, 1, 1);
-				SDL_RWwrite(dst, &colors[i].g, 1, 1);
-				SDL_RWwrite(dst, &colors[i].r, 1, 1);
-				SDL_RWwrite(dst, &colors[i].unused, 1, 1);
+				LORETHUNK_CFI_3((dst)->write)(dst, &colors[i].b, 1, 1);
+				LORETHUNK_CFI_3((dst)->write)(dst, &colors[i].g, 1, 1);
+				LORETHUNK_CFI_3((dst)->write)(dst, &colors[i].r, 1, 1);
+				LORETHUNK_CFI_3((dst)->write)(dst, &colors[i].unused, 1, 1);
 			}
 		}
 
 		/* Write the bitmap offset */
-		bfOffBits = SDL_RWtell(dst)-fp_offset;
-		if ( SDL_RWseek(dst, fp_offset+10, RW_SEEK_SET) < 0 ) {
+		bfOffBits = LORETHUNK_CFI_4((dst)->seek)(dst, 0, 1)-fp_offset;
+		if ( LORETHUNK_CFI_4((dst)->seek)(dst, fp_offset+10, 0) < 0 ) {
 			SDL_Error(SDL_EFSEEK);
 		}
 		SDL_WriteLE32(dst, bfOffBits);
-		if ( SDL_RWseek(dst, fp_offset+bfOffBits, RW_SEEK_SET) < 0 ) {
+		if ( LORETHUNK_CFI_4((dst)->seek)(dst, fp_offset+bfOffBits, 0) < 0 ) {
 			SDL_Error(SDL_EFSEEK);
 		}
 
@@ -547,25 +605,25 @@ int SDL_SaveBMP_RW (SDL_Surface *saveme, SDL_RWops *dst, int freedst)
 		pad  = ((bw%4) ? (4-(bw%4)) : 0);
 		while ( bits > (Uint8 *)surface->pixels ) {
 			bits -= surface->pitch;
-			if ( SDL_RWwrite(dst, bits, 1, bw) != bw) {
+			if ( LORETHUNK_CFI_3((dst)->write)(dst, bits, 1, bw) != bw) {
 				SDL_Error(SDL_EFWRITE);
 				break;
 			}
 			if ( pad ) {
 				const Uint8 padbyte = 0;
 				for ( i=0; i<pad; ++i ) {
-					SDL_RWwrite(dst, &padbyte, 1, 1);
+					LORETHUNK_CFI_3((dst)->write)(dst, &padbyte, 1, 1);
 				}
 			}
 		}
 
 		/* Write the BMP file size */
-		bfSize = SDL_RWtell(dst)-fp_offset;
-		if ( SDL_RWseek(dst, fp_offset+2, RW_SEEK_SET) < 0 ) {
+		bfSize = LORETHUNK_CFI_4((dst)->seek)(dst, 0, 1)-fp_offset;
+		if ( LORETHUNK_CFI_4((dst)->seek)(dst, fp_offset+2, 0) < 0 ) {
 			SDL_Error(SDL_EFSEEK);
 		}
 		SDL_WriteLE32(dst, bfSize);
-		if ( SDL_RWseek(dst, fp_offset+bfSize, RW_SEEK_SET) < 0 ) {
+		if ( LORETHUNK_CFI_4((dst)->seek)(dst, fp_offset+bfSize, 0) < 0 ) {
 			SDL_Error(SDL_EFSEEK);
 		}
 
@@ -577,7 +635,13 @@ int SDL_SaveBMP_RW (SDL_Surface *saveme, SDL_RWops *dst, int freedst)
 	}
 
 	if ( freedst && dst ) {
-		SDL_RWclose(dst);
+		LORETHUNK_CFI_2((dst)->close)(dst);
 	}
 	return((SDL_strcmp(SDL_GetError(), "") == 0) ? 0 : -1);
 }
+
+//
+// Original code end
+//
+
+
